@@ -40,10 +40,38 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+
+use std::panic;
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.len() == 0 {
+            return Person::default();
+        }
+        let parts = s.split(",");
+        let vs = parts.collect::<Vec<&str>>();
+        if vs.len() != 2 {
+            return Person::default();
+        }
+
+        let name = vs[0];
+        if name.len() == 0 {
+            return Person::default();
+        }
+
+        let parse_result = panic::catch_unwind(|| {
+            vs[1].parse::<usize>().unwrap()
+        });
+        if let Ok(age) = parse_result {
+            return Person {
+                name: name.to_string(),
+                age: age,
+            }
+        } else {
+            return Person::default();
+        }
+        
+
     }
 }
 
