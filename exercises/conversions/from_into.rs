@@ -70,8 +70,6 @@ impl From<&str> for Person {
         } else {
             return Person::default();
         }
-        
-
     }
 }
 
